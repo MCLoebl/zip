@@ -1,6 +1,7 @@
 #include "zip.h"
 #include <stdint.h>
 #include <stdlib.h>
+#include <stdio.h>
 
 int LLVMFuzzerTestOneInput(const uint8_t *data, const size_t size)
 {
@@ -15,5 +16,14 @@ int LLVMFuzzerTestOneInput(const uint8_t *data, const size_t size)
     zip_stream_copy(zip, (void **) &outbuf, &outbufsize);
     zip_stream_close(zip);
     free(outbuf);
+
+    char* temp_name = tmpnam(NULL);
+    FILE* file = fopen(temp_name, "wb");
+    fwrite(data, size, 1, file);
+    fclose(file);
+
+    const char *filenames[] = {temp_name};
+    zip_create("/tmp/test.zip", filenames, 1);
+
     return 0;
 }
