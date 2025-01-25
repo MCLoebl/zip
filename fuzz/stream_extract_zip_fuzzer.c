@@ -11,8 +11,8 @@ int on_extract_entry(const char *filename, void *arg) {
 
 int LLVMFuzzerTestOneInput(const uint8_t *data, const size_t size)
 {
+    int arg = 2;
     zip_stream_extract(data, size, "/tmp", on_extract_entry, &arg);
-    zip_stream_close(zip);
 
     return 0;
 }
