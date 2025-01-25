@@ -3,12 +3,6 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-int on_extract_entry(const char *filename, void *arg) {
-    static int i = 0;
-    int n = *(int *)arg;
-    printf("Extracted: %s (%d of %d)\n", filename, ++i, n);
-    return 0;
-}
 
 int LLVMFuzzerTestOneInput(const uint8_t *data, const size_t size)
 {
@@ -17,10 +11,9 @@ int LLVMFuzzerTestOneInput(const uint8_t *data, const size_t size)
     zip_entry_open(zip, "test_file.txt");
     zip_entry_write(zip, data, size);
     zip_entry_close(zip);
+    char *entries[] = {"test_file_not_there.txt", "test_file.txt"};
+    zip_entries_delete(zip, entries, 2);
     zip_close(zip);
-
-    int arg = 2;
-    zip_extract(temp_name, "/tmp", on_extract_entry, &arg);
 
     return 0;
 }

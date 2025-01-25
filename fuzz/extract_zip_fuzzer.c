@@ -17,7 +17,7 @@ int LLVMFuzzerTestOneInput(const uint8_t *data, const size_t size)
     fwrite(data, size, 1, file);
     fclose(file);
 
-    int arg = 2;
+    int arg = 1;
     zip_extract(temp_name, "/tmp", on_extract_entry, &arg);
 
     return 0;
