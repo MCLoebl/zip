@@ -22,6 +22,9 @@ target_link_libraries(stream_extract_zip_fuzzer PRIVATE ${PROJECT_NAME} $ENV{LIB
 add_executable(create_zip_fuzzer create_zip_fuzzer.c)
 target_link_libraries(create_zip_fuzzer PRIVATE ${PROJECT_NAME} $ENV{LIB_FUZZING_ENGINE})
 
+add_executable(create_zip_file_fuzzer create_zip_file_fuzzer.c)
+target_link_libraries(create_zip_file_fuzzer PRIVATE ${PROJECT_NAME} $ENV{LIB_FUZZING_ENGINE})
+
 add_executable(zip_entries_delete_fuzzer zip_entries_delete_fuzzer.c)
 target_link_libraries(zip_entries_delete_fuzzer PRIVATE ${PROJECT_NAME} $ENV{LIB_FUZZING_ENGINE})
 
@@ -30,6 +33,7 @@ if (DEFINED ENV{OUT})
     install(TARGETS extract_zip_fuzzer DESTINATION $ENV{OUT})
     install(TARGETS stream_extract_zip_fuzzer DESTINATION $ENV{OUT})
     install(TARGETS create_zip_fuzzer DESTINATION $ENV{OUT})
+    install(TARGETS create_zip_file_fuzzer DESTINATION $ENV{OUT})
     install(TARGETS zip_entries_delete_fuzzer DESTINATION $ENV{OUT})
 else ()
     message(WARNING "Cannot install if $OUT is not defined!")

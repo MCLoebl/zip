@@ -2,7 +2,7 @@
 #include <stdint.h>
 #include <stdlib.h>
 #include <stdio.h>
-
+#include <unistd.h>
 
 int LLVMFuzzerTestOneInput(const uint8_t *data, const size_t size)
 {
@@ -14,6 +14,7 @@ int LLVMFuzzerTestOneInput(const uint8_t *data, const size_t size)
     char *entries[] = {"test_file_not_there.txt", "test_file.txt"};
     zip_entries_delete(zip, entries, 2);
     zip_close(zip);
+    unlink(temp_name);
 
     return 0;
 }

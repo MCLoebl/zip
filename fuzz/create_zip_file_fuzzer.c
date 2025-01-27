@@ -4,10 +4,6 @@
 #include <stdio.h>
 #include <unistd.h>
 
-int on_extract_entry(const char *filename, void *arg) {
-    return 0;
-}
-
 int LLVMFuzzerTestOneInput(const uint8_t *data, const size_t size)
 {
     char* temp_name = tmpnam(NULL);
@@ -15,8 +11,11 @@ int LLVMFuzzerTestOneInput(const uint8_t *data, const size_t size)
     fwrite(data, size, 1, file);
     fclose(file);
 
-    zip_extract(temp_name, "/tmp", on_extract_entry, NULL);
-    unlink(temp_name);
+    char* temp_zip_name = tmpnam(NULL);
+    const char *filenames[] = {temp_name};
+    zip_create(temp_zip_name, filenames, 1);
 
+    unlink(temp_name);
+    unlink(temp_zip_name);
     return 0;
 }
